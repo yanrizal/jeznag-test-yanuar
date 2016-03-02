@@ -1,4 +1,4 @@
 # jeznag-test-yanuar
 
-npm install
+npm install<br>
 npm run test
