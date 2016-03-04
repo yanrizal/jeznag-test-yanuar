@@ -18,7 +18,7 @@ export default (function() {
         
         if(html){
             let $ = cheerio.load(emailContents);
-            processedEmail = $('td').find(">:first-child").text();
+            processedEmail = $(emailContents).find(">:first-child").first().text();
         }else{
             let strippedHTML = stripHTML(emailContents);
             processedEmail = extractSignature(strippedHTML).text || emailContents;

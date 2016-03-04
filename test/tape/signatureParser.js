@@ -99,6 +99,32 @@ console.log(emailParseUtil);
         expect.end();
     });
 
+
+test('Signature parser2 should correctly strip out Zoho Support replies', function (expect) {
+        const originalEmail = `<td><div dir="ltr">Can you advise whether this has been done?</div></td>
+        <td><div>sadsd</div></td>
+        <td><a>dsadsd</a></td>`;
+        const expectedOutput = 'Can you advise whether this has been done?';
+        let actualOutput = emailParseUtil.removeQuotedTextFromEmail(originalEmail);
+        expect.equal(actualOutput, expectedOutput);
+        expect.end();
+    });
+
+
+test('Signature parser3 should correctly strip out Zoho Support replies', function (expect) {
+        const originalEmail = `<div><p>Can you advise whether this has been done?</p></div><div>sdasa</div>
+        `;
+        const expectedOutput = 'Can you advise whether this has been done?';
+        let actualOutput = emailParseUtil.removeQuotedTextFromEmail(originalEmail);
+        expect.equal(actualOutput, expectedOutput);
+        expect.end();
+    });
+
+
+
+
+
+
     test('Cherie example', function (expect) {
         const originalEmail = `Hi Cherie,
  
