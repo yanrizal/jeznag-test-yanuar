@@ -17,8 +17,11 @@ export default (function() {
         let processedEmail
         
         if(html){
-            let $ = cheerio.load(emailContents);
-            processedEmail = $(emailContents).find(">:first-child").first().text();
+            // let $ = cheerio.load(emailContents);
+            // processedEmail = $(emailContents).find(">:first-child").first().text();
+            let strippedHTML = emailContents.replace(/<br[^>]*>/gi, "\n");
+            strippedHTML = stripHTML(strippedHTML);
+            processedEmail = extractSignature(strippedHTML).text || emailContents;
         }else{
             let strippedHTML = stripHTML(emailContents);
             processedEmail = extractSignature(strippedHTML).text || emailContents;

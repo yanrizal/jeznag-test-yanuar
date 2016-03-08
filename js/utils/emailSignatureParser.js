@@ -6,6 +6,8 @@
 /* eslint no-use-before-define:0 */
 
 var _ = require("lodash");
+//var chalk = require('chalk');
+
 var debug = function () {}
 
 module.exports = {
@@ -130,6 +132,13 @@ var RE_PHONE_SIGNATURE = new RegExp(
 );
 
 
+var RE_UPDATE = new RegExp(
+  "\\bOn (Mon|Tue|Wed|Thu|Fri|Sat|Sun)\\b" + 
+  "|" +
+  "^wrote:"
+)
+
+
 // see _mark_candidate_indexes() for details
 // c - could be signature line
 // d - line starts with dashes (could be signature or list item)
@@ -174,13 +183,14 @@ function extractSignature (msgBody) {
       strippedBody = strippedBody.substring(0, match.index);
     }
     debug("phoneSignature", JSON.stringify(phoneSignature));
-
+    //console.log(chalk.white.bgGreen(phoneSignature))
     // decide on signature candidate
     var lines = strippedBody.split(delimiter);
+    //console.log(chalk.red(lines))
     debug("lines", lines);
     var candidate = getSignatureCandidate(lines).join(delimiter);
     debug("candidate", JSON.stringify(candidate));
-
+    //console.log(chalk.blue(candidate))
     // Try to extract signature
     var signatureIndex = candidate.search(RE_SIGNATURE);
 
@@ -191,13 +201,20 @@ function extractSignature (msgBody) {
 
     var signature = candidate.substring(signatureIndex);
     debug("signature", JSON.stringify(signature));
-
+    //console.log(chalk.cyan(signature))
     // when we splitlines() and then join them
     // we can lose a new line at the end
     // we did it when identifying a candidate
     // so we had to do it for stripped_body now
     strippedBody = msgBody.substring(0, msgBody.indexOf(signature));
 
+    var matchUpdate = strippedBody.match(RE_UPDATE);
+    //console.log(chalk.green(testt));
+
+    if(matchUpdate){
+      strippedBody = strippedBody.substring(0, matchUpdate.index);
+    }
+    //console.log(chalk.green(strippedBody));
     if (phoneSignature) {
       signature = signature + phoneSignature;
     }
